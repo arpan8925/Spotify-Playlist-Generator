@@ -24,7 +24,7 @@ def spotify_access_token():
 
 
     return spotify_access_token
-
+w
 def get_song_details():
     song_response = requests.get(SONG_END)
     if song_response.status_code == 200:
