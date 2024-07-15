@@ -11,7 +11,8 @@ def spotify_access_token():
     encode = base64.b64encode(b'data to be encoded')
 
     access_head = {
-        "Authorization" : 
+        "Authorization" : f"Basic {encode}",
+        "Content-Type": "application/x-www-form-urlencoded"
     }
 
     access_body = {
