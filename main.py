@@ -6,12 +6,14 @@ SONG_END = "https://www.jiosaavn.com/featured/trending_today/I3kvhipIy73uCJW60TJ
 
 ACCESS_END = "https://accounts.spotify.com/api/token"
 
+
+
 def spotify_access_token():
 
-    encode = base64.b64encode(b'data to be encoded')
+    CLIENT_ID_encode = base64.b64encode(b'ccfc3e0244884379a0b514be1737b83d')
 
     access_head = {
-        "Authorization" : f"Basic {encode}",
+        "Authorization" : f"Basic {CLIENT_ID_encode}",
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
