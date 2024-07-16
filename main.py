@@ -2,44 +2,48 @@ import requests
 import base64
 import base64
 from bs4 import BeautifulSoup
+from spotipy import *
 
 SONG_END = "https://www.jiosaavn.com/featured/trending_today/I3kvhipIy73uCJW60TJk1Q__"
-
+Spotify_Id = "f409f6r9hrprb8brt7l0djqvi"
 ACCESS_END = "https://accounts.spotify.com/api/token"
+SPOTIFY_END = "https://api.spotify.com/v1"
 
-def spotify_access_token():
-    # Define your client ID and client secret
-    client_id = 'ccfc3e0244884379a0b514be1737b83d'
-    client_secret = 'b57f44b97b1f43aab4a22b6128404eca'
+sp = Spotify(auth_manager=SpotifyOAuth(client_id="ccfc3e0244884379a0b514be1737b83d",
+                                               client_secret="b57f44b97b1f43aab4a22b6128404eca",
+                                               redirect_uri="http://localhost:3000",
+                                               scope="user-library-read"))
 
-    # Encode client ID and client secret in base64
-    client_credentials = f"{client_id}:{client_secret}"
-    client_credentials_base64 = base64.b64encode(client_credentials.encode()).decode()
+playlist = user_playlist_create(Spotify_Id, name='New Playlist', public=True, collaborative=False, description='New Playlist Desc')
 
-    # Set the headers and body for the POST request
-    headers = {
-        "Authorization": f"Basic {client_credentials_base64}",
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-    body = {
-        "grant_type": "client_credentials"
-    }
 
-    # Make the POST request to get the access token
-    response = requests.post(ACCESS_END, headers=headers, data=body)
 
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the JSON response to get the access token
-        token_info = response.json()
-        access_token = token_info.get('access_token')
-        print(f"Access token: {access_token}")
-        return access_token
-    else:
-        print(f"Failed to get access token. Status code: {response.status_code}")
-        print(response.json())
-        return None
+# def create_playlist(access_token):
+#     playsit_crt_end = f"{SPOTIFY_END}/users/{Spotify_Id}/playlists"
 
+#     playlist_head = {
+#         "Authorization": f"Bearer {access_token}",
+#         "Content-Type": "application/json"
+#     }
+
+#     playlist_body = {
+#         "name": "New Playlist",
+#         "description": "New playlist description",
+#         "public": True
+#     }
+
+#     response = requests.post(playsit_crt_end, headers=playlist_head, json=playlist_body)
+
+#     if response.status_code == 201:
+#         playlist_info = response.json()
+#         print(f"Playlist created: {playlist_info}")
+#         return playlist_info
+#     else:
+#         print(f"Failed to create playlist. Status code: {response.status_code}")
+#         print(response.json())
+#         return None
+
+    
 
 # def get_song_details():
 #     song_response = requests.get(SONG_END)
@@ -53,4 +57,3 @@ def spotify_access_token():
 
 # get_song_details()
 
-spotify_access_token()
