@@ -1,5 +1,6 @@
 import requests
 import base64
+import base64
 from bs4 import BeautifulSoup
 
 SONG_END = "https://www.jiosaavn.com/featured/trending_today/I3kvhipIy73uCJW60TJk1Q__"
@@ -38,6 +39,7 @@ def spotify_access_token():
         print(f"Failed to get access token. Status code: {response.status_code}")
         print(response.json())
         return None
+
 
 def get_song_details():
     song_response = requests.get(SONG_END)
