@@ -9,8 +9,8 @@ ACCESS_END = "https://accounts.spotify.com/api/token"
 
 def spotify_access_token():
     # Define your client ID and client secret
-    client_id = 'YOUR_CLIENT_ID'
-    client_secret = 'YOUR_CLIENT_SECRET'
+    client_id = 'ccfc3e0244884379a0b514be1737b83d'
+    client_secret = 'b57f44b97b1f43aab4a22b6128404eca'
 
     # Encode client ID and client secret in base64
     client_credentials = f"{client_id}:{client_secret}"
@@ -26,7 +26,7 @@ def spotify_access_token():
     }
 
     # Make the POST request to get the access token
-    response = requests.post("https://accounts.spotify.com/api/token", headers=headers, data=body)
+    response = requests.post(ACCESS_END, headers=headers, data=body)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -41,16 +41,16 @@ def spotify_access_token():
         return None
 
 
-def get_song_details():
-    song_response = requests.get(SONG_END)
-    if song_response.status_code == 200:
-        soup = BeautifulSoup(song_response.content, "html.parser")
-        song_titles = [title.getText() for title in soup.find_all(name="a", class_="u-color-js-gray")]
-        print(song_titles)
-    else:
-        print(f"Failed to retrieve the page. Status code: {song_response.status_code}")
+# def get_song_details():
+#     song_response = requests.get(SONG_END)
+#     if song_response.status_code == 200:
+#         soup = BeautifulSoup(song_response.content, "html.parser")
+#         song_titles = [title.getText() for title in soup.find_all(name="a", class_="u-color-js-gray")]
+#         print(song_titles)
+#     else:
+#         print(f"Failed to retrieve the page. Status code: {song_response.status_code}")
 
 
-get_song_details()
+# get_song_details()
 
 spotify_access_token()
