@@ -2,46 +2,43 @@ import requests
 import base64
 import base64
 from bs4 import BeautifulSoup
-from spotipy import *
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth 
+
 
 SONG_END = "https://www.jiosaavn.com/featured/trending_today/I3kvhipIy73uCJW60TJk1Q__"
-Spotify_Id = "f409f6r9hrprb8brt7l0djqvi"
-ACCESS_END = "https://accounts.spotify.com/api/token"
-SPOTIFY_END = "https://api.spotify.com/v1"
+SPOTIFY_CLIENT_ID = "ccfc3e0244884379a0b514be1737b83d"
+SPOTIFY_CLIENT_SECRET = "b57f44b97b1f43aab4a22b6128404eca"
+SPOTIFY_REDIRECT_URI = "http://localhost:3000"
+SPOTIFY_USER_ID = "f409f6r9hrprb8brt7l0djqvi"
 
-sp = Spotify(auth_manager=SpotifyOAuth(client_id="ccfc3e0244884379a0b514be1737b83d",
-                                               client_secret="b57f44b97b1f43aab4a22b6128404eca",
-                                               redirect_uri="http://localhost:3000",
-                                               scope="user-library-read"))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id=SPOTIFY_CLIENT_ID,
+    client_secret=SPOTIFY_CLIENT_SECRET,
+    redirect_uri=SPOTIFY_REDIRECT_URI,
+    scope="playlist-modify-public"
+))
 
-playlist = user_playlist_create(Spotify_Id, name='New Playlist', public=True, collaborative=False, description='New Playlist Desc')
+playlist_name = "New Playlist"
+playlist_description = "New Playlist Desc"
+playlist = sp.user_playlist_create(
+    user=SPOTIFY_USER_ID,
+    name=playlist_name,
+    public=True,
+    description=playlist_description
+)
 
+song_name = "Agun lagaiya dilo kone"
+search_music = sp.search(
+    q=song_name,
+    limit=10,
+    offset=0,
+    type='track',
+    market=None
+    )
 
+print(search_music)
 
-# def create_playlist(access_token):
-#     playsit_crt_end = f"{SPOTIFY_END}/users/{Spotify_Id}/playlists"
-
-#     playlist_head = {
-#         "Authorization": f"Bearer {access_token}",
-#         "Content-Type": "application/json"
-#     }
-
-#     playlist_body = {
-#         "name": "New Playlist",
-#         "description": "New playlist description",
-#         "public": True
-#     }
-
-#     response = requests.post(playsit_crt_end, headers=playlist_head, json=playlist_body)
-
-#     if response.status_code == 201:
-#         playlist_info = response.json()
-#         print(f"Playlist created: {playlist_info}")
-#         return playlist_info
-#     else:
-#         print(f"Failed to create playlist. Status code: {response.status_code}")
-#         print(response.json())
-#         return None
 
     
 
@@ -57,3 +54,19 @@ playlist = user_playlist_create(Spotify_Id, name='New Playlist', public=True, co
 
 # get_song_details()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+print(f"Playlist created: {playlist['name']} with ID {playlist['id']}")
