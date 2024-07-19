@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth 
+from spotipy.oauth2 import SpotifyOAuth
+from datetime import datetime
 
 SPOTIFY_CLIENT_ID = "ccfc3e0244884379a0b514be1737b83d"
 SPOTIFY_CLIENT_SECRET = "b57f44b97b1f43aab4a22b6128404eca"
@@ -20,7 +21,17 @@ if song_response.status_code == 200:
     soup = BeautifulSoup(song_response.content, "html.parser")
     song_titles = [title.getText() for title in soup.find_all(name="a", class_="u-color-js-gray")]
 
-    for song_name in song_titles[:2]:
+    
+    now = datetime.now()
+    formatted = now.strftime("%Y-%m-%d")
+    user = "f409f6r9hrprb8brt7l0djqvi"
+    name = formatted
+    playlist = sp.user_playlist_create(
+        user, name, public=True, collaborative=False, description=''
+        )   
+    song_playlist = playlist["id"]
+
+    for song_name in song_titles[:30]:
         song_name = song_name
         search_music = sp.search(
             q=song_name,
@@ -32,10 +43,9 @@ if song_response.status_code == 200:
 
         items = search_music["tracks"]["items"][0]["uri"]
 
-        playlist_id = "5xmEzU0RuIOWsTyedGKTQf"  # Replace with the correct playlist ID
+        playlist_id = song_playlist
 
         try:
-            # Add the track to the playlist
             add_item = sp.playlist_add_items(playlist_id, [items])
             print(add_item)
         except Exception as e:
